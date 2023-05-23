@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BankMockIT
+namespace OOPBank
 {
-    internal class SavingsAcc : IAccount
+    public class SavingsAcc : IAccount
     {
         public SavingsAcc() { }
+
+        public string MemberName { get; set; }
 
         public decimal Balance { get; set; }
 
@@ -27,6 +29,10 @@ namespace BankMockIT
             }
             //else { throw new Exception("Error: Withdrawal amount would exceed the $10 savings account minimum."); }
             else { Console.WriteLine("Error: Withdrawal amount would exceed the $10 savings account minimum."); }
+        }
+        public void SetMemberName(string name)
+        {
+            MemberName = name;
         }
 
     }
