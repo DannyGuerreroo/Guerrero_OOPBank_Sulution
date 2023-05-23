@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OOPBank
 {
-    class Bank // Bank collects all members
+    public class Bank // Bank collects all members
     {
         private IAccount acc;
         public List<IAccount> members;

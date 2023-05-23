@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OOPBank
 {
-    internal class Vault : IVault // Vault intended to display combined balances of all bank members
+    public class Vault : IVault // Vault intended to display combined balances of all bank members
     {
         public decimal VaultBalance { get; set; }
 

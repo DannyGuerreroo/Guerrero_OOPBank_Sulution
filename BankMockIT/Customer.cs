@@ -35,7 +35,7 @@ namespace OOPBank
         public void DepositToSavings() 
         {
             decimal amount;
-            Console.WriteLine("Input the amount you would like to deposit to checking:\n");
+            Console.WriteLine("Input the amount you would like to deposit to savings:\n");
             string dsinput = Console.ReadLine();
 
             if (decimal.TryParse(dsinput, out amount))
