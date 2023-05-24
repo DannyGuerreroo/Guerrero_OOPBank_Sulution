@@ -9,14 +9,17 @@ namespace OOPBank
 {
     public class Customer
     {
-        public IAccount checkingAccount;
-        public IAccount savingsAccount;
+        private IAccount checkingAcc;
+        private IAccount savingsAcc;
         private decimal combinedBalance;
 
-        public Customer()
+        private IAccount _checkingAcc = new CheckingAcc();
+        private IAccount _savingsAcc = new SavingsAcc();
+
+        public Customer(IAccount checking, IAccount savings)
         {
-            checkingAccount = new CheckingAcc();
-            savingsAccount = new SavingsAcc();
+            _checkingAcc = checking;
+            _savingsAcc = savings;
         }
 
         public void DepositToChecking()
@@ -27,7 +30,7 @@ namespace OOPBank
 
             if (decimal.TryParse(dcinput, out amount))
             {
-                checkingAccount.Deposit(amount);
+                checkingAcc.Deposit(amount);
                 Console.WriteLine("$" + amount + " was deposited into checking.\n");
             }
             else { Console.WriteLine("Invalid amount entered.\n"); }
@@ -40,7 +43,7 @@ namespace OOPBank
 
             if (decimal.TryParse(dsinput, out amount))
             {
-                savingsAccount.Deposit(amount);
+                savingsAcc.Deposit(amount);
                 Console.WriteLine("$" + amount + " was deposited into savings.\n");
             }
             else { Console.WriteLine("Invalid amount entered.\n"); }
@@ -48,44 +51,37 @@ namespace OOPBank
 
         public void WithdrawFromChecking(decimal amount)
         {
-            combinedBalance = checkingAccount.Balance + savingsAccount.Balance;
+            combinedBalance = checkingAcc.Balance + savingsAcc.Balance;
             if(amount > (combinedBalance - 10)) // Checks if withdrawal amount would be too high
             {
                 Console.WriteLine("Error: Withdrawal amount would exceed the combined checking and savings accounts' balances.");
             }
-            else if (amount > checkingAccount.Balance) // Checks if the savings account needs to be used to cover the withdrawal
+            else if (amount > checkingAcc.Balance) // Checks if the savings account needs to be used to cover the withdrawal
             {
-                decimal overamount = amount - checkingAccount.Balance; // Calculates how much to withdraw from savings to cover for the checking withdrawal
-                Console.WriteLine("$" + checkingAccount.Balance + " was withdrawn from checking &");
-                checkingAccount.Withdraw(checkingAccount.Balance);
-                savingsAccount.Withdraw(overamount);
+                decimal overamount = amount - checkingAcc.Balance; // Calculates how much to withdraw from savings to cover for the checking withdrawal
+                Console.WriteLine("$" + checkingAcc.Balance + " was withdrawn from checking &");
+                checkingAcc.Withdraw(checkingAcc.Balance);
+                savingsAcc.Withdraw(overamount);
 
             } else // A normal withdrawal if the checking balance can handle the withdrawal
             {
-                checkingAccount.Withdraw(amount);
+                checkingAcc.Withdraw(amount);
             }
         }
         public void WithdrawFromSavings(decimal amount)
         {
-            savingsAccount.Withdraw(amount);
+            savingsAcc.Withdraw(amount);
         }
 
         public void CheckBalances()
         {
-            Console.WriteLine("Checking Balance: $" + checkingAccount.Balance + "\n Savings Balance: $" + savingsAccount.Balance);
+            Console.WriteLine("Checking Balance: $" + _checkingAcc.Balance + "\n Savings Balance: $" + _savingsAcc.Balance);
         }
 
         public void SetMemberName(string name)
         {
-            checkingAccount.SetMemberName(name + ".Checking");
-            savingsAccount.SetMemberName(name + ".Savings");
+            _checkingAcc.SetMemberName(name + ".Checking");
+            _savingsAcc.SetMemberName(name + ".Savings");
         }
-
-        //public void AddMembersToBank()
-        //{
-        //    OOPBank.Bank bank = new OOPBank.Bank();
-        //    bank.AddMember(checkingAccount);
-        //    bank.AddMember(savingsAccount);
-        //}
     }
 }

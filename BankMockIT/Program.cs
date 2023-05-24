@@ -6,7 +6,10 @@ namespace OOPBank
     {
         static void Main(string[] args)
         {
-            Customer account = new Customer();
+            CheckingAcc checkingAcc = new CheckingAcc();
+            SavingsAcc savingsAcc = new SavingsAcc();
+
+            Customer account = new Customer(checkingAcc, savingsAcc);
             Bank bank = new Bank();
             Vault vault = new Vault();
 
@@ -15,14 +18,14 @@ namespace OOPBank
             // Initializng the balances
             account.SetMemberName("Danny");
 
-            account.checkingAccount.Deposit(2000);
-            account.savingsAccount.Deposit(3000);
+            //account.checkingAcc.Deposit(2000);
+            //account.savingsAcc.Deposit(3000);
 
-            bank.AddMember(account.checkingAccount); // Testing bank/vault functionality
-            bank.AddMember(account.savingsAccount);
+            //bank.AddMember(account.checkingAcc); // Testing bank/vault functionality
+            //bank.AddMember(account.savingsAcc);
 
-            Console.WriteLine(account.checkingAccount.MemberName);
-            Console.WriteLine(account.savingsAccount.MemberName);
+            //Console.WriteLine(account.checkingAcc.MemberName);
+            //Console.WriteLine(account.savingsAcc.MemberName);
             vault.CheckVaultBalance(bank.members);
 
 
