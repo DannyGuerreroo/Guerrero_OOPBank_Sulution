@@ -11,21 +11,20 @@ namespace OOPBank
 
             Customer account = new Customer(checkingAcc, savingsAcc);
             Bank bank = new Bank();
-            Vault vault = new Vault();
+            Vault vault = new Vault(bank);
 
             decimal amount; // Variable used when user defines amount of money to deposit/withdraw
 
-            // Initializng the balances
+            // Initializing the balances
             account.SetMemberName("Danny");
+            checkingAcc.Deposit(2000);
+            savingsAcc.Deposit(3000);
 
-            //account.checkingAcc.Deposit(2000);
-            //account.savingsAcc.Deposit(3000);
+            bank.AddMember(checkingAcc); // Testing bank/vault functionality
+            bank.AddMember(savingsAcc);
 
-            //bank.AddMember(account.checkingAcc); // Testing bank/vault functionality
-            //bank.AddMember(account.savingsAcc);
-
-            //Console.WriteLine(account.checkingAcc.MemberName);
-            //Console.WriteLine(account.savingsAcc.MemberName);
+            Console.WriteLine(checkingAcc.MemberName);
+            Console.WriteLine(savingsAcc.MemberName);
             vault.CheckVaultBalance(bank.members);
 
 
@@ -58,11 +57,10 @@ namespace OOPBank
                     case '3': // Withdraws money from checking account
                         Console.WriteLine("Input the amount you would like to withdraw from checking:\n");
                         string wcinput = Console.ReadLine();
-
-                        if (decimal.TryParse(wcinput, out amount))
+                        amount = account.ParseAmount(wcinput);
+                        if (amount > 0)
                         {
                             account.WithdrawFromChecking(amount);
-                            //Console.WriteLine("$" + amount + " was withdrawn from checking.\n");
                         }
                         else { Console.WriteLine("Invalid amount entered.\n"); }
                         break;
@@ -74,8 +72,8 @@ namespace OOPBank
                     case '5': // Withdraws money from savings account
                         Console.WriteLine("Input the amount you would like to withdraw from savings:\n");
                         string wsinput = Console.ReadLine();
-
-                        if (decimal.TryParse(wsinput, out amount))
+                        amount = account.ParseAmount(wsinput);
+                        if (amount > 0)
                         {
                             account.WithdrawFromSavings(amount);
                         }

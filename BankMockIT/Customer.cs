@@ -9,8 +9,6 @@ namespace OOPBank
 {
     public class Customer
     {
-        private IAccount checkingAcc;
-        private IAccount savingsAcc;
         private decimal combinedBalance;
 
         private IAccount _checkingAcc = new CheckingAcc();
@@ -22,15 +20,29 @@ namespace OOPBank
             _savingsAcc = savings;
         }
 
+        public decimal ParseAmount(string input) // Parses input into decimal
+        {
+            decimal amount;
+            if (decimal.TryParse(input, out amount))
+            {
+                return amount;
+            }
+            else
+            {
+                amount = 0;
+                return amount;
+            }
+        }
+
         public void DepositToChecking()
         {
             decimal amount;
             Console.WriteLine("Input the amount you would like to deposit to checking:\n");
             string dcinput = Console.ReadLine();
-
-            if (decimal.TryParse(dcinput, out amount))
+            amount = ParseAmount(dcinput);
+            if (amount > 0)
             {
-                checkingAcc.Deposit(amount);
+                _checkingAcc.Deposit(amount);
                 Console.WriteLine("$" + amount + " was deposited into checking.\n");
             }
             else { Console.WriteLine("Invalid amount entered.\n"); }
@@ -40,10 +52,10 @@ namespace OOPBank
             decimal amount;
             Console.WriteLine("Input the amount you would like to deposit to savings:\n");
             string dsinput = Console.ReadLine();
-
-            if (decimal.TryParse(dsinput, out amount))
+            amount = ParseAmount(dsinput);
+            if (amount > 0)
             {
-                savingsAcc.Deposit(amount);
+                _savingsAcc.Deposit(amount);
                 Console.WriteLine("$" + amount + " was deposited into savings.\n");
             }
             else { Console.WriteLine("Invalid amount entered.\n"); }
@@ -51,26 +63,25 @@ namespace OOPBank
 
         public void WithdrawFromChecking(decimal amount)
         {
-            combinedBalance = checkingAcc.Balance + savingsAcc.Balance;
+            combinedBalance = _checkingAcc.Balance + _savingsAcc.Balance;
             if(amount > (combinedBalance - 10)) // Checks if withdrawal amount would be too high
             {
                 Console.WriteLine("Error: Withdrawal amount would exceed the combined checking and savings accounts' balances.");
             }
-            else if (amount > checkingAcc.Balance) // Checks if the savings account needs to be used to cover the withdrawal
+            else if (amount > _checkingAcc.Balance) // Checks if the savings account needs to be used to cover the withdrawal
             {
-                decimal overamount = amount - checkingAcc.Balance; // Calculates how much to withdraw from savings to cover for the checking withdrawal
-                Console.WriteLine("$" + checkingAcc.Balance + " was withdrawn from checking &");
-                checkingAcc.Withdraw(checkingAcc.Balance);
-                savingsAcc.Withdraw(overamount);
+                decimal overamount = amount - _checkingAcc.Balance; // Calculates how much to withdraw from savings to cover for the checking withdrawal
+                _checkingAcc.Withdraw(_checkingAcc.Balance);
+                _savingsAcc.Withdraw(overamount);
 
             } else // A normal withdrawal if the checking balance can handle the withdrawal
             {
-                checkingAcc.Withdraw(amount);
+                _checkingAcc.Withdraw(amount);
             }
         }
         public void WithdrawFromSavings(decimal amount)
         {
-            savingsAcc.Withdraw(amount);
+            _savingsAcc.Withdraw(amount);
         }
 
         public void CheckBalances()
