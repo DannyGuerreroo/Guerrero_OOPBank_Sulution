@@ -12,7 +12,7 @@ namespace OOPBank
 
         public string MemberName { get; set; }
 
-        public decimal Balance { get; set; }
+        public virtual decimal Balance { get; set; }
 
         public void Deposit(decimal amount)
         {

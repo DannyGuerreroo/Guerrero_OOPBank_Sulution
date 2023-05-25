@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 namespace OOPBank
 {
-    internal class CheckingAcc : IAccount
+    public class CheckingAcc : IAccount
     {
         public CheckingAcc() { }
 
         public string MemberName { get; set; }
 
-        public decimal Balance { get; set; }
+        public virtual decimal Balance { get; set; }
 
         public void Deposit(decimal amount)
         {
-
             Balance += amount;
         }
 
         public void Withdraw(decimal amount)
         {
             Balance -= amount;
+            Console.WriteLine("$" + amount + " was withdrawn from checking.\n");
         }
 
         public void SetMemberName(string name)
